@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>緯育訓練中心地圖</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <style>
+      #map {
+        width: 100%;
+        height: 500px;
+      }
+
+      a {
+        color: brown;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+
+    <!-- <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
+      defer
+    ></script> -->
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBy5_SjUbRXayyiYVb9QaQSlRUW6CSM5Io&callback=initMap"
+    ></script>
+    <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
+    <script>
+      const locations = [
+        { lat: 25.052144641935804, lng: 121.5446417957439 },
+        { lat: 25.052845462739914, lng: 121.54442030831672 },
+        { lat: 25.052077758408036, lng: 121.54552132554961 }, //不葷主義茶餐廳
+        { lat: 25.052961781156593, lng: 121.54553416540044 },
+        { lat: 25.049545399136335, lng: 121.54226551086732 },
+        { lat: 25.049377981623778, lng: 121.54227070919693 }, //小張
+        { lat: 25.049285927783824, lng: 121.5422947749612 },
+        { lat: 25.048765095545335, lng: 121.54204342142324 },
+        { lat: 25.049147846894446, lng: 121.54142840740215 },
+        { lat: 25.050117837605562, lng: 121.54157231393994 },
+      ];
+
+      const infos = [
+        "兄弟大飯店",
+        "海底撈火鍋 慶城店",
+        "不葷主義茶餐廳 Veggienius 台北店",
+        "慶城海南雞飯",
+        "<h3>以琳廣東粥、炒飯</h3>",
+        "小張龜山島",
+        "可不可熟成紅茶-台北遼寧店",
+        "丁媽媽手工水餃",
+        "森3 sunsun-museum",
+        "小制作茶 【創始店",
+      ];
+
+      // Initialize and add the map
+      function initMap() {
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 14,
+          center: { lat: 25.052390403983576, lng: 121.54330653981468 },
+        });
+        const img = "img/order.png";
+        const infowindow = new google.maps.InfoWindow();
+        // 創建標記
+        const markers = locations.map((position, i) => {
+          const info_label = infos[i];
+          const marker = new google.maps.Marker({
+            position,
+            info_label,
+            icon: img,
+          });
+          marker.addListener("click", () => {
+            infowindow.setContent(info_label);
+            infowindow.open(map, marker);
+          });
+          return marker;
+        });
+
+        // 創建叢集標記
+        const markerCluster = new markerClusterer.MarkerClusterer({
+          map,
+          markers,
+        });
+      }
+
+      // 載入地圖
+      initMap();
+    </script>
+  </body>
+</html>
